@@ -44,6 +44,11 @@ class BotManController extends Controller
 
     public function startRequest(BotMan $bot)
     {
+        $bot->startConversation(new RequestConversation($bot, true));
+    }
+
+    public function startRequestWithMessage(BotMan $bot)
+    {
         $bot->startConversation(new RequestConversation($bot));
     }
 }

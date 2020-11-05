@@ -17,7 +17,7 @@ $botman->hears('/start', function ($bot) {
 
     $keyboard = [
         [
-            ["text" => "\xF0\x9F\x93\xA6Оставить заявку",
+            ["text" => "\xF0\x9F\x94\xA5\xF0\x9F\x94\xA5\xF0\x9F\x94\xA5ПОЛУЧИТЬ СПЕЦИАЛЬНОЕ ЦЕНОВОЕ ПРЕДЛОЖЕНИЕ\xF0\x9F\x94\xA5\xF0\x9F\x94\xA5\xF0\x9F\x94\xA5",
                 "request_contact" => true]
         ],
         ["\xE2\x8C\x9AПолучить расчет окупаемости"],
@@ -44,22 +44,32 @@ $botman->hears('.*Получить расчет окупаемости', functio
     $telegramUser = $bot->getUser();
     $id = $telegramUser->getId();
 
-    $message = "На текущий момент цена плоттера *39000 ₽.*\xE2\x9C\x85.\nВыберите цену поклейки плёнки:";
-    $keyboard = [];
+    $message = "Уникальное предложение!\xE2\x9C\x85.\nВыберите цену поклейки плёнки:";
 
-    $tmp = [];
-    for ($i = 100; $i < 1200; $i += 100) {
-        $price = $i + 200;
-        array_push($tmp, ['text' => "\xF0\x9F\x94\xB8 $price ₽", 'callback_data' => "/calc $price"]);
-        if ($i % 300 === 0) {
-            array_push($keyboard, $tmp);
-            $tmp = [];
-        }
 
-    }
+    $keyboard = [
+        [
+            ['text' => "\xF0\x9F\x94\xB8 500 ₽", 'callback_data' => "/calc 500"],
+            ['text' => "\xF0\x9F\x94\xB8 600 ₽", 'callback_data' => "/calc 600"],
+            ['text' => "\xF0\x9F\x94\xB8 700 ₽", 'callback_data' => "/calc 700"],
+        ],
+        [
+            ['text' => "\xF0\x9F\x94\xB8 800 ₽", 'callback_data' => "/calc 800"],
+            ['text' => "\xF0\x9F\x94\xB8 1000 ₽", 'callback_data' => "/calc 1000"],
+        ]
+    ];
+    /*  for ($i = 100; $i < 1200; $i += 100) {
+          $price = $i + 200;
+          array_push($tmp, ['text' => "\xF0\x9F\x94\xB8 $price ₽", 'callback_data' => "/calc $price"]);
+          if ($i % 300 === 0) {
+              array_push($keyboard, $tmp);
+              $tmp = [];
+          }
 
-    if ($tmp != [])
-        array_push($keyboard, $tmp);
+      }
+
+      if ($tmp != [])
+          array_push($keyboard, $tmp);*/
 
     $bot->sendRequest("sendMessage",
         [
@@ -73,7 +83,7 @@ $botman->hears('.*Получить расчет окупаемости', functio
         ]);
 });
 
-$botman->hears('.*Получить стоимость плоттера и пленок', function ($bot) {
+/*$botman->hears('.*Получить стоимость плоттера и пленок', function ($bot) {
     $telegramUser = $bot->getUser();
     $id = $telegramUser->getId();
 
@@ -99,7 +109,7 @@ $botman->hears('.*Получить стоимость плоттера и пле
                     $keyboard
             ])
         ]);
-});
+});*/
 
 $botman->hears('/calc ([0-9]+)', function ($bot, $price) {
     $telegramUser = $bot->getUser();
@@ -136,7 +146,7 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
     $message = sprintf("*Заказ товара:*\n\xF0\x9F\x94\xB8 позвони по телефону *+7 938 528-76-99*, *+79994826970* Whats App нашему менеджеру;\n
 \xF0\x9F\x94\xB8 оставить заявку на нашем сайте: https://plottersale.ru/\n
 \xF0\x9F\x94\xB8 оформить заявку на Авито\n\n*Оплата товара:*\n\xF0\x9F\x94\xB8 наличными курьеру при получении (Москва)\n
-\xF0\x9F\x94\xB8 через Авито доставку и оплату\n
+\xF0\x9F\x94\xB8 через Авито доставку и оплату (https://www.avito.ru/moskva/orgtehnika_i_rashodniki/plotter_dlya_narezki_gidrogelevoy_plenki_na_telefon_2009828423)\n
 \xF0\x9F\x94\xB8 на карту Сбербанк
 ");
 
@@ -160,7 +170,8 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
 
 });
 
-$botman->hears('.*Задать свой вопрос|/request|.*заявка.*', BotManController::class . '@startRequest');
+$botman->hears('.*Получить стоимость плоттера и пленок|/request', BotManController::class . '@startRequest');
+$botman->hears('.*Задать свой вопрос|.*заявка.*', BotManController::class . '@startRequestWithMessage');
 
 $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
     /* Log::info(print_r($bot->getMessage()->getPayload(),true));*/
@@ -172,13 +183,13 @@ $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
 
         $user = $bot->getUser();
 
-        $bot->reply("Заявка успешно принята! С вами свяжется наш менеджер!");
+        $bot->reply("Заявка успешно принята! Мы свяжемся с вами в течение 10 минут!");
 
         $toEmail = env('MAIL_ADMIN');
         Mail::to($toEmail)->send(new FeedbackMail([
-            "name"=>($user->getLastName() . " " . $user->getFirstName() ?? $user->getUsername() ?? $user->getId()),
-            "phone"=>$tmp_phone,
-            "date"=>(Carbon::now("+3"))
+            "name" => ($user->getLastName() . " " . $user->getFirstName() ?? $user->getUsername() ?? $user->getId()),
+            "phone" => $tmp_phone,
+            "date" => (Carbon::now("+3"))
         ]));
     } else
         $bot->reply("Попробуй что-то другое ввести!");
