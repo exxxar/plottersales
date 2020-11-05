@@ -166,7 +166,7 @@ $botman->hears('/request|.*заявка.*', BotManController::class . '@startReq
 $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
     /* Log::info(print_r($bot->getMessage()->getPayload(),true));*/
 
-    $json = \GuzzleHttp\json_decode($bot->getMessage()->getPayload());
+    $json = json_decode($bot->getMessage()->getPayload());
 
     if (isset($json->contact)) {
         $tmp_phone = $json->contact->phone_number;
