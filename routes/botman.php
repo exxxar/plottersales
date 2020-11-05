@@ -146,7 +146,7 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
     $message = sprintf("*Заказ товара:*\n\xF0\x9F\x94\xB8 позвони по телефону *+7 938 528-76-99*, *+79994826970* Whats App нашему менеджеру;\n
 \xF0\x9F\x94\xB8 оставить заявку на нашем сайте: https://plottersale.ru/\n
 \xF0\x9F\x94\xB8 оформить заявку на Авито\n\n*Оплата товара:*\n\xF0\x9F\x94\xB8 наличными курьеру при получении (Москва)\n
-\xF0\x9F\x94\xB8 через Авито доставку и оплату (https://www.avito.ru/moskva/orgtehnika_i_rashodniki/plotter_dlya_narezki_gidrogelevoy_plenki_na_telefon_2009828423)\n
+\xF0\x9F\x94\xB8 через Авито доставку и оплату\n
 \xF0\x9F\x94\xB8 на карту Сбербанк
 ");
 
@@ -154,6 +154,10 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
         [
             ["text" => "\xF0\x9F\x93\xA6Свяжись с нами", "callback_data" => "/request"]
         ],
+        [
+            ["text" => "\xF0\x9F\x93\x8DГлянуть на Авито", "url" => "https://www.avito.ru/moskva/orgtehnika_i_rashodniki/plotter_dlya_narezki_gidrogelevoy_plenki_na_telefon_2009828423"]
+        ],
+
 
     ];
 
