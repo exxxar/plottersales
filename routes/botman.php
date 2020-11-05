@@ -160,8 +160,7 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
 
 });
 
-$botman->hears('.*Задать свой вопрос', BotManController::class . '@startConversation');
-$botman->hears('/request|.*заявка.*', BotManController::class . '@startRequest');
+$botman->hears('.*Задать свой вопрос|/request|.*заявка.*', BotManController::class . '@startRequest');
 
 $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
     /* Log::info(print_r($bot->getMessage()->getPayload(),true));*/
