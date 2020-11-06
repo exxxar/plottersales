@@ -273,6 +273,8 @@ $botman->hears('/users_list_2', function ($bot) {
 
 function usersList($bot, $users)
 {
+    $telegramUser = $bot->getUser();
+    $id = $telegramUser->getId();
 
     foreach ($users as $user) {
         $phones = json_decode($user->phone) ?? [];
@@ -284,7 +286,7 @@ function usersList($bot, $users)
                 $tmp_phones .= "$phone\n";
 
 
-        $message = sprintf("Пользователь:%s\nТелефон:%s",
+        $message = sprintf("Пользователь:%s\nТелефоны:\n%s",
             ($user->name ?? $user->fio_from_telegram ?? $user->telegram_chat_id ?? 'Ошибка'),
             $tmp_phones
         );
@@ -299,7 +301,7 @@ function usersList($bot, $users)
         try {
             $bot->sendRequest("sendMessage",
                 [
-                    "chat_id" => $user->telegram_chat_id,
+                    "chat_id" => $id,
                     "text" => $message,
                     "parse_mode" => "Markdown",
                     'reply_markup' => json_encode([
