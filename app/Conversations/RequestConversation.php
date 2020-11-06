@@ -46,17 +46,20 @@ class RequestConversation extends Conversation
 
         $this->ask($question, function (Answer $answer) {
 
+            $phone =  $answer->getText();
             $user = User::where("telegram_chat_id", $this->current_user_id)->first();
             $phones = json_decode($user->phone) ?? [];
-            array_push($phones, $answer->getText());
-            $user->phone = json_encode($phones);
-            $user->save();
+            if (!in_array($phone, $phones)) {
+                array_push($phones, $phone);
+                $user->phone = json_encode($phones);
+                $user->save();
+            }
 
             if (!$this->is_only_phone) {
                 $this->askMessage($answer->getText());
             } else {
                 $this->send([
-                    "phone" => $answer->getText() ?? "Нет телефона",
+                    "phone" => $phone?? "Нет телефона",
                     "message" => 'Нет сообщения'
                 ]);
             }

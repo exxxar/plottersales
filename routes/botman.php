@@ -230,8 +230,8 @@ $botman->hears('.*Раздел администратора|/admin', function ($
 
 });
 
-$botman->hears('/send_to_all',BotManController::class . '@startMessageToAll');
-$botman->hears('/send_message ([0-9]+)',BotManController::class . '@startMessageToUser');
+$botman->hears('/send_to_all', BotManController::class . '@startMessageToAll');
+$botman->hears('/send_message ([0-9]+)', BotManController::class . '@startMessageToUser');
 
 $botman->hears('/send_message ([0-9]+)', function ($bot, $id) {
     if (!isAdmin($bot))
@@ -364,13 +364,15 @@ $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
 
         $user = User::where("telegram_chat_id", $id)->first();
         $phones = json_decode($user->phone) ?? [];
-        array_push($phones, $tmp_phone);
-        $user->phone = json_encode($phones);
-        $user->save();
+        if (!in_array($tmp_phone, $phones)) {
+            array_push($phones, $tmp_phone);
+            $user->phone = json_encode($phones);
+            $user->save();
+        }
 
         $toEmail = env('MAIL_ADMIN');
         Mail::to($toEmail)->send(new FeedbackMail([
-            "name" => ($user->getLastName() . " " . $user->getFirstName() ?? $user->getUsername() ?? $user->getId()),
+            "name" => ($telegramUser->getLastName() . " " . $telegramUser->getFirstName() ?? $telegramUser->getUsername() ?? $telegramUser->getId()),
             "phone" => $tmp_phone,
             "date" => (Carbon::now("+3"))
         ]));
