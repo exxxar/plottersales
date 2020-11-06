@@ -47,6 +47,11 @@ class MessagesConversation extends Conversation
 
             $user = User::where("id", $this->recipient_user_id)->get();
 
+            if (is_null($user))
+            {
+                $this->bot->reply("Хм, что-то пошло не так...");
+                return;
+            }
             $keyboard = [
                 [
                     [
@@ -59,7 +64,7 @@ class MessagesConversation extends Conversation
             try {
                 $this->bot->sendRequest("sendMessage",
                     [
-                        "chat_id" => "$user->telegram_chat_id",
+                        "chat_id" => $user->telegram_chat_id,
                         "text" => $answer->getText(),
                         "parse_mode" => "Markdown",
                         'reply_markup' => json_encode([
