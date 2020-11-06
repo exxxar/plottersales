@@ -296,16 +296,20 @@ function usersList($bot, $users)
             ],
         ];
 
-        $bot->sendRequest("sendMessage",
-            [
-                "chat_id" => $user->telegram_chat_id,
-                "text" => $message,
-                "parse_mode" => "Markdown",
-                'reply_markup' => json_encode([
-                    'inline_keyboard' =>
-                        $keyboard
-                ])
-            ]);
+        try {
+            $bot->sendRequest("sendMessage",
+                [
+                    "chat_id" => $user->telegram_chat_id,
+                    "text" => $message,
+                    "parse_mode" => "Markdown",
+                    'reply_markup' => json_encode([
+                        'inline_keyboard' =>
+                            $keyboard
+                    ])
+                ]);
+        }catch (Exception $e){
+            $bot->reply("Сообщение НЕ доставелно к #$user->telegram_chat_id ! Пользователь отписался от бота.");
+        }
 
     }
 }
