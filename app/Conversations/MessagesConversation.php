@@ -6,6 +6,7 @@ use App\User;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
 use BotMan\BotMan\Messages\Outgoing\Question;
 
 class MessagesConversation extends Conversation
@@ -32,7 +33,7 @@ class MessagesConversation extends Conversation
     public function run()
     {
         if (is_null($this->recipient_user_id))
-            $this->askMessages();
+            $this->askMessagesToAll();
         else
             $this->askMessage();
     }
@@ -45,7 +46,7 @@ class MessagesConversation extends Conversation
         $this->ask($question, function (Answer $answer) {
 
 
-            $user = User::where("id", $this->recipient_user_id)->get();
+            $user = User::where("id", $this->recipient_user_id)->first();
 
             if (is_null($user))
             {
@@ -75,13 +76,14 @@ class MessagesConversation extends Conversation
                     ]);
                 $this->bot->reply("Сообщение доставлен к #$user->telegram_chat_id");
             } catch (\Exception $e) {
+
                 $this->bot->reply("Сообщение НЕ доставелно к #$user->telegram_chat_id ! Пользователь отписался от бота.");
             }
 
         });
     }
 
-    public function askMessages()
+    public function askMessagesToAll()
     {
         $question = Question::create('Текст сообщения для пользователей:')
             ->fallback('Спасибо что пообщались со мной:)!');
