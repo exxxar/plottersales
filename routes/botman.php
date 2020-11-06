@@ -279,13 +279,13 @@ function usersList($bot, $users)
     foreach ($users as $user) {
         $phones = json_decode($user->phone) ?? [];
 
-        $tmp_phones = '';
+        $tmp_phones = 'нет телефона';
 
-        if (count($phones) > 0)
+        if (count($phones) > 0) {
+            $tmp_phones = '';
             foreach ($phones as $phone)
                 $tmp_phones .= "$phone\n";
-
-
+        }
         $message = sprintf("Пользователь:%s\nТелефоны:\n%s",
             ($user->name ?? $user->fio_from_telegram ?? $user->telegram_chat_id ?? 'Ошибка'),
             $tmp_phones
@@ -309,7 +309,7 @@ function usersList($bot, $users)
                             $keyboard
                     ])
                 ]);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             $bot->reply("Сообщение НЕ доставелно к #$user->telegram_chat_id ! Пользователь отписался от бота.");
         }
 
