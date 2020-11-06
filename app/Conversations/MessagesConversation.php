@@ -91,7 +91,7 @@ class MessagesConversation extends Conversation
         $this->ask($question, function (Answer $answer) {
 
 
-            $users = User::where("telegram_chat_id", $this->current_user_id)->get();
+            $users = User::all();
 
 
             $this->bot->reply("Ожидайте! Это займет какое-то время! Всего в базе " . (count($users)) . " пользователей!");
