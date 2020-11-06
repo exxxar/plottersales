@@ -17,8 +17,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password',
+        'telegram_chat_id',
+        'fio_from_telegram',
+        'phone',
+        'is_admin',
     ];
 
+    protected $casts = [
+      "phone"=>"array"
+    ];
     /**
      * The attributes that should be hidden for arrays.
      *

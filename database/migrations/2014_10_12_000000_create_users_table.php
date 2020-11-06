@@ -17,6 +17,16 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+
+            $table->string('telegram_chat_id')->unique()->nullable();
+
+            $table->string('fio_from_telegram')->default('');
+            $table->json('phone')->nullable();
+
+            $table->string('birthday')->nullable();
+
+            $table->boolean('is_admin')->default(false);
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

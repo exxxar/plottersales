@@ -3,6 +3,7 @@
 namespace App\Conversations;
 
 use App\Mail\FeedbackMail;
+use App\User;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\Answer;
@@ -44,6 +45,12 @@ class RequestConversation extends Conversation
             ->fallback('Спасибо что пообщались со мной:)!');
 
         $this->ask($question, function (Answer $answer) {
+
+            $user = User::where("telegram_chat_id", $this->current_user_id)->first();
+            $phones = json_decode($user->phone) ?? [];
+            array_push($phones, $answer->getText());
+            $user->phone = json_encode($phones);
+            $user->save();
 
             if (!$this->is_only_phone) {
                 $this->askMessage($answer->getText());

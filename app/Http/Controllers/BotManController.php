@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Conversations\CalcConversation;
+use App\Conversations\MessagesConversation;
 use App\Conversations\RequestConversation;
 use BotMan\BotMan\BotMan;
+use http\Message;
 use Illuminate\Http\Request;
 use App\Conversations\ExampleConversation;
 
@@ -30,7 +32,7 @@ class BotManController extends Controller
 
     /**
      * Loaded through routes/botman.php
-     * @param  BotMan $bot
+     * @param BotMan $bot
      */
     public function startConversation(BotMan $bot)
     {
@@ -51,4 +53,15 @@ class BotManController extends Controller
     {
         $bot->startConversation(new RequestConversation($bot));
     }
+
+    public function startMessageToAll(BotMan $bot)
+    {
+        $bot->startConversation(new MessagesConversation($bot));
+    }
+
+    public function startMessageToUser(BotMan $bot, $id)
+    {
+        $bot->startConversation(new MessagesConversation($bot, $id));
+    }
+
 }
