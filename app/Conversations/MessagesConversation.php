@@ -32,7 +32,7 @@ class MessagesConversation extends Conversation
     public function run()
     {
         if (is_null($this->recipient_user_id))
-            $this->askMessage();
+            $this->askMessages();
         else
             $this->askMessage();
     }
@@ -52,6 +52,7 @@ class MessagesConversation extends Conversation
                 $this->bot->reply("Хм, что-то пошло не так...");
                 return;
             }
+
             $keyboard = [
                 [
                     [
