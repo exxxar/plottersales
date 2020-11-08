@@ -40,19 +40,19 @@ class MessagesConversation extends Conversation
 
     public function askMessage()
     {
-        $question = Question::create('Текст сообщения для пользователя (' . $this->recipient_user_id . '):')
+
+        $user = User::where("id", $this->recipient_user_id)->first();
+
+        if (is_null($user))
+        {
+            $this->bot->reply("Хм, что-то пошло не так...");
+            return;
+        }
+
+        $question = Question::create('Текст сообщения для пользователя (' . $user->telegram_chat_id . '):')
             ->fallback('Спасибо что пообщались со мной:)!');
 
-        $this->ask($question, function (Answer $answer) {
-
-
-            $user = User::where("id", $this->recipient_user_id)->first();
-
-            if (is_null($user))
-            {
-                $this->bot->reply("Хм, что-то пошло не так...");
-                return;
-            }
+        $this->ask($question, function (Answer $answer) use ($user) {
 
             $keyboard = [
                 [
