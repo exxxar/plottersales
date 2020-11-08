@@ -117,7 +117,7 @@ $botman->hears('.*Получить расчет окупаемости', functio
                     $keyboard
             ])
         ]);
-});
+})->stopsConversation();
 
 /*$botman->hears('.*Получить стоимость плоттера и пленок', function ($bot) {
     $telegramUser = $bot->getUser();
@@ -228,7 +228,7 @@ $botman->hears('.*Раздел администратора|/admin', function ($
         ]);
 
 
-});
+})->stopsConversation();
 
 $botman->hears('/send_to_all', BotManController::class . '@startMessageToAll');
 $botman->hears('/send_message ([0-9]+)', BotManController::class . '@startMessageToUser');
@@ -350,10 +350,10 @@ $botman->hears('.*Порядок заказа и оплаты|/order', function 
             ])
         ]);
 
-});
+})->stopsConversation();
 
 $botman->hears('.*Получить стоимость плоттера и пленок|/request', BotManController::class . '@startRequest');
-$botman->hears('.*Задать свой вопрос|.*заявка.*', BotManController::class . '@startRequestWithMessage');
+$botman->hears('.*Задать свой вопрос|.*заявка.*', BotManController::class . '@startRequestWithMessage')->stopsConversation();
 
 $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
     /* Log::info(print_r($bot->getMessage()->getPayload(),true));*/
@@ -384,4 +384,4 @@ $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
         ]));
     } else
         $bot->reply("Попробуй что-то другое ввести!");
-});
+})->stopsConversation();
