@@ -279,6 +279,7 @@ function usersList($bot, $users)
     foreach ($users as $user) {
         $phones = json_decode($user->phone) ?? [];
 
+        Log::info(print_r($phones,true));
         $tmp_phones = 'нет телефона';
 
         if (count($phones) > 0) {

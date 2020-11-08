@@ -48,7 +48,6 @@ class RequestConversation extends Conversation
 
             $phone =  $answer->getText();
 
-
             $user = User::where("telegram_chat_id", $this->current_user_id)->first();
             $phones = json_decode($user->phone) ?? [];
             if (!in_array($phone, $phones)) {
