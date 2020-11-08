@@ -288,9 +288,11 @@ function usersList($bot, $users)
                 $tmp_phones .= "$phone\n";
         }
         $message = sprintf("Пользователь:%s\nТелефоны:\n%s",
-            ($user->name ?? $user->fio_from_telegram ?? $user->telegram_chat_id ?? 'Ошибка'),
+            $user->telegram_chat_id,
             $tmp_phones
         );
+
+        Log::info(print_r($message,true));
 
         $keyboard = [
 
