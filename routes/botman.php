@@ -384,4 +384,4 @@ $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
         ]));
     } else
         $bot->reply("Попробуй что-то другое ввести!");
-})->stopsConversation();
+});
