@@ -74,7 +74,7 @@ class MessagesConversation extends Conversation
                                 $keyboard
                         ])
                     ]);
-                $this->bot->reply("Сообщение доставлен к #$user->telegram_chat_id");
+                $this->bot->reply("Сообщение доставлено к #".($user->name??$user->telegram_chat_id));
             } catch (\Exception $e) {
 
                 $this->bot->reply("Сообщение НЕ доставелно к #$user->telegram_chat_id ! Пользователь отписался от бота.");

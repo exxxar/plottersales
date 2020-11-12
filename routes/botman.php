@@ -288,11 +288,9 @@ function usersList($bot, $users)
                 $tmp_phones .= "$phone\n";
         }
         $message = sprintf("Пользователь:%s\nТелефоны:\n%s",
-            $user->telegram_chat_id,
+            ($user->name??$user->telegram_chat_id),
             $tmp_phones
         );
-
-        Log::info(print_r($message,true));
 
         $keyboard = [
 
@@ -313,7 +311,7 @@ function usersList($bot, $users)
                     ])
                 ]);
         } catch (Exception $e) {
-            $bot->reply("Сообщение НЕ доставелно к #$user->telegram_chat_id ! Пользователь отписался от бота.");
+
         }
 
     }
