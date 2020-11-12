@@ -288,7 +288,7 @@ function usersList($bot, $users)
                 $tmp_phones .= "$phone\n";
         }
         $message = sprintf("Пользователь:%s\nТелефоны:\n%s",
-            ($user->name??$user->telegram_chat_id),
+            $user->telegram_chat_id,
             $tmp_phones
         );
 
