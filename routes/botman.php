@@ -364,7 +364,9 @@ $botman->fallback(function (\BotMan\BotMan\BotMan $bot) {
     $json = json_decode($bot->getMessage()->getPayload());
 
     if (isset($json->contact)) {
-        $tmp_phone = $json->contact->phone_number;
+        $phone= $json->contact->phone_number;
+
+        $tmp_phone = str_replace(["(", ")", "-", " "], "", $phone);
 
         $telegramUser = $bot->getUser();
         $id = $telegramUser->getId();

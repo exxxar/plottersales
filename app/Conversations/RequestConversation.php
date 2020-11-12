@@ -48,6 +48,16 @@ class RequestConversation extends Conversation
 
             $phone =  $answer->getText();
 
+            $pattern_ua = "/^\+380\d{3}\d{2}\d{2}\d{2}$/";
+            $pattern_ru = "/^\+7\d{3}\d{2}\d{2}\d{2}$/";
+            $tmp_phone = str_replace(["(", ")", "-", " "], "", $phone);
+
+            if (preg_match($pattern_ua, $tmp_phone) == 0&&preg_match($pattern_ru, $tmp_phone)== 0) {
+                $this->bot->reply("Вы неверно ввели телефонный номер! Попробуйте ввести в формате +7XXXXXXXXXX.");
+                $this->askPhone();
+                return;
+            }
+
             $user = User::where("telegram_chat_id", $this->current_user_id)->first();
             if (is_null($user))
             {
@@ -63,10 +73,10 @@ class RequestConversation extends Conversation
             }
 
             if (!$this->is_only_phone) {
-                $this->askMessage($answer->getText());
+                $this->askMessage($tmp_phone);
             } else {
                 $this->send([
-                    "phone" => $phone?? "Нет телефона",
+                    "phone" => $tmp_phone?? "Нет телефона",
                     "message" => 'Нет сообщения'
                 ]);
             }
